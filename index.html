@@ -5,6 +5,17 @@
 </head>
 <body>
   <div>
+    <ul id="menu">
+      <li>Language
+          <ul class="child">
+            <li><div class="lang" id="en">英語</div></li>
+            <li><div class="lang" id="ja">日本語</div></li>
+          </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div>
     <span data-i18n="hello"></span>
     <span data-i18n="world"></span>
   </div>
@@ -15,14 +26,65 @@
   <script>
     (function() {
       'use strict';
-      i18next.use(i18nextXHRBackend).init({
-        lng: 'ja'
-      }, function(err, t) {
-        //i18nextJquery.init(i18next, $);
-        jqueryI18next.init(i18next, $);
-        $("[data-i18n]").localize();
+      var setLang = function(lang) {
+        i18next.use(i18nextXHRBackend).init({
+          lng: lang
+        }, function(err, t) {
+          //i18nextJquery.init(i18next, $);
+          jqueryI18next.init(i18next, $);
+          $("[data-i18n]").localize();
+        });
+      }; 
+
+      // default
+      setLang("ja");
+
+      // pull down
+      $('#menu li').hover(function(){
+          $("ul:not(:animated)", this).slideDown();
+      }, function(){
+          $("ul.child",this).slideUp();
+      });
+
+      // language
+      $('.lang').click(function(){
+        setLang(this.id);
       });
     }());
   </script>
+  <style>
+  ul{
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+  }
+  ul#menu li{
+      float: left;
+      position: relative;
+      margin: 0;
+      padding: 5px;
+      width: 200px;
+      background-color: #555555;
+      display: block;
+  }
+  ul.child{
+          display: none;
+          position: absolute;
+          margin-left: -5px;
+          padding: 0;
+  }
+  ul.child li a{
+      padding: 5px 10px;
+      margin-left: -5px;
+      margin-right: -5px;
+      margin-bottom: -5px;
+      display: block;
+      color: #fff;
+  }
+  li div:hover{
+      background: #ff0000;
+}
+  </style>
 </body>
 </html>
